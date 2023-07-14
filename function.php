@@ -32,7 +32,8 @@ function videoToAudio(){
         readfile($audioOutputPath);
         
     }catch(Exception $e){
-        
+        echo $e;
+        return false;
         header('location: index.php');
 
     }
