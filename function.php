@@ -37,6 +37,11 @@ function videoToAudio(){
 
         // $command = "$ffmpegPath -loop 1 -i $imageFileEscaped -i $audioFileEscaped -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest $audioOutputPath";
         exec($command);
+        // Mengatur header untuk mengunduh file
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($audioOutputPath) . '"');
+        header('Content-Length: ' . filesize($audioOutputPath));
         readfile($audioOutputPath);
         
     }catch(Exception $e){
