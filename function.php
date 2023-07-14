@@ -14,21 +14,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function videoToAudio(){
-  
+
     try{
-        $ffmpeg = FFMpeg::create();
+        // $ffmpeg = FFMpeg::create();
 
+        // $audioOutputPath = 'upload/hasil/'.time().'.mp3';
+
+        // $video = $ffmpeg->open($_FILES['video']['tmp_name']);
+        // $audioFormat = new Mp3();
+
+        // $video->save($audioFormat, $audioOutputPath);
+        // // Membuat header untuk mengunduh file
+        // header('Content-Description: File Transfer');
+        // header('Content-Type: application/octet-stream');
+        // header('Content-Disposition: attachment; filename="' . basename($audioOutputPath) . '"');
+        // header('Content-Length: ' . filesize($audioOutputPath));
+            // Path ke binary ffmpeg
         $audioOutputPath = 'upload/hasil/'.time().'.mp3';
+        $ffmpegPath = '/usr/bin/ffmpeg';
+        $video = $_FILES['video']['tmp_name'];
+        $command = "$ffmpegPath -i $video -vn -acodec libmp3lame -ab 128k $audioOutputPath";
 
-        $video = $ffmpeg->open($_FILES['video']['tmp_name']);
-        $audioFormat = new Mp3();
-
-        $video->save($audioFormat, $audioOutputPath);
-        // Membuat header untuk mengunduh file
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($audioOutputPath) . '"');
-        header('Content-Length: ' . filesize($audioOutputPath));
+        // $command = "$ffmpegPath -loop 1 -i $imageFileEscaped -i $audioFileEscaped -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest $audioOutputPath";
+        exec($command);
         readfile($audioOutputPath);
         
     }catch(Exception $e){
