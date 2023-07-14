@@ -14,7 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function videoToAudio(){
-    $ffmpeg = FFMpeg::create();
+  
+    try{
+        $ffmpeg = FFMpeg::create();
 
         $audioOutputPath = 'upload/hasil/'.time().'.mp3';
 
@@ -28,29 +30,13 @@ function videoToAudio(){
         header('Content-Disposition: attachment; filename="' . basename($audioOutputPath) . '"');
         header('Content-Length: ' . filesize($audioOutputPath));
         readfile($audioOutputPath);
-  
-    // try{
-    //     $ffmpeg = FFMpeg::create();
-
-    //     $audioOutputPath = 'upload/hasil/'.time().'.mp3';
-
-    //     $video = $ffmpeg->open($_FILES['video']['tmp_name']);
-    //     $audioFormat = new Mp3();
-
-    //     $video->save($audioFormat, $audioOutputPath);
-    //     // Membuat header untuk mengunduh file
-    //     header('Content-Description: File Transfer');
-    //     header('Content-Type: application/octet-stream');
-    //     header('Content-Disposition: attachment; filename="' . basename($audioOutputPath) . '"');
-    //     header('Content-Length: ' . filesize($audioOutputPath));
-    //     readfile($audioOutputPath);
         
-    // }catch(Exception $e){
-    //     echo $e;
-    //     return false;
-    //     header('location: index.php');
+    }catch(Exception $e){
+        echo $e;
+        return false;
+        header('location: index.php');
 
-    // }
+    }
     
 }
 
