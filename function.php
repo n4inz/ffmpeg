@@ -57,7 +57,8 @@ function videoToAudio(){
 }
 
 function audioToVideo(){
-    
+    // echo $_FILES['image']['name'];
+    // return false;
     $audioFile = $_FILES['audios']['tmp_name'];
     $imageFile = $_FILES['image']['tmp_name']; 
     
@@ -68,7 +69,9 @@ function audioToVideo(){
     $ffmpegPath = '/usr/bin/ffmpeg';
     
     // Menjalankan ffmpeg untuk mengubah audio dan gambar menjadi video
-    $command = "$ffmpegPath -loop 1 -i $imageFile -i $audioFile -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest $outputFile";
+    $command = "$ffmpegPath -loop 1 -i $imageFile -i $audioFile -vf scale=200:200:force_original_aspect_ratio=decrease,pad=200:200:-1:-1:color=black -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest $outputFile";
+
+    // $command = "$ffmpegPath -loop 1 -i $imageFile -i $audioFile -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest $outputFile";
     exec($command);
     
     // Cek jika file output berhasil dibuat
